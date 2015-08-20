@@ -1342,12 +1342,12 @@ class VeritransBinPromo extends PaymentModule
 	
 
 	//error_log($param_installment,true);
-		$param_payment_option = array(
-			'installment' => array(
-								'required' => $param_required,
-								'installment_terms' => $param_installment 
-							)
-			);
+		// $param_payment_option = array(
+		// 	'installment' => array(
+		// 						'required' => $param_required,
+		// 						'installment_terms' => $param_installment 
+		// 					)
+		// 	);
 
 		$params_all = array(
 			'payment_type' => Configuration::get('VT_PAYMENT_TYPE'),
