@@ -47,8 +47,8 @@ class VeritransBinPromoNotificationModuleFrontController extends ModuleFrontCont
     //     $history->id_order = (int)$veritrans_notification->orderId; 
     //     if ($veritrans_notification->mStatus == 'success')
     //     { 
-    //       // $this->module->validateOrder($cart->id, Configuration::get('VT_PAYMENT_SUCCESS_STATUS_MAP'), $total, $this->module->displayName, NULL, $mailVars, (int)$currency->id, false, $customer->secure_key);     
-    //       $history->changeIdOrderState(Configuration::get('VT_PAYMENT_SUCCESS_STATUS_MAP'), (int)$veritrans_notification->orderId);
+    //       // $this->module->validateOrder($cart->id, Configuration::get('VB_PAYMENT_SUCCESS_STATUS_MAP'), $total, $this->module->displayName, NULL, $mailVars, (int)$currency->id, false, $customer->secure_key);     
+    //       $history->changeIdOrderState(Configuration::get('VB_PAYMENT_SUCCESS_STATUS_MAP'), (int)$veritrans_notification->orderId);
     //       // $status = "Payment Success";
     //       // $this->validate($this->module->currentOrder, $veritrans_notification->orderId, $status);
     //       echo 'validation success';
@@ -56,7 +56,7 @@ class VeritransBinPromoNotificationModuleFrontController extends ModuleFrontCont
     //     }
     //     elseif ($veritrans_notification->mStatus == 'failure')
     //     {
-    //       // $this->module->validateOrder($cart->id, Configuration::get('VT_PAYMENT_FAILURE_STATUS_MAP'), $total, $this->module->displayName, NULL, $mailVars, (int)$currency->id, false, $customer->secure_key);
+    //       // $this->module->validateOrder($cart->id, Configuration::get('VB_PAYMENT_FAILURE_STATUS_MAP'), $total, $this->module->displayName, NULL, $mailVars, (int)$currency->id, false, $customer->secure_key);
     //       $history->changeIdOrderState(Configuration::get('VT_PAYMENT_SUCCESS_FAILURE_MAP'), (int)$veritrans_notification->orderId);
     //       // $status = "Payment Error";
     //       // $this->validate($this->module->currentOrder, $veritrans_notification->orderId, $status);

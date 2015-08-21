@@ -43,35 +43,24 @@ class VeritransBinPromo extends PaymentModule
 
 		// key length must be between 0-32 chars to maintain compatibility with <= 1.5
 		$this->config_keys = array(			
-			'VT_CLIENT_KEY',
-			'VT_SERVER_KEY',
-			'VT_API_VERSION',
-			'VT_PAYMENT_TYPE',
-			'VT_3D_SECURE',
-			'VT_KURS',
-			'VT_BIN_FILTER',
-			'VT_CONVENIENCE_FEE',
-			'VT_PAYMENT_SUCCESS_STATUS_MAP',
-			'VT_PAYMENT_FAILURE_STATUS_MAP',
-			'VT_PAYMENT_CHALLENGE_STATUS_MAP',
-			'VT_ENVIRONMENT',
-			'ENABLED_CREDIT_CARD',
-			'ENABLED_CIMB',
-			'ENABLED_MANDIRI',
-			'ENABLED_PERMATAVA',
-			'ENABLED_BRIEPAY',
-			'ENABLED_TELKOMSEL_CASH',
-			'ENABLED_XL_TUNAI',
-			'ENABLED_MANDIRI_BILL',
-			'ENABLED_BBM_MONEY',
-			'ENABLED_INDOMARET',
-			'ENABLED_INDOSAT_DOMPETKU',
-			'VT_SANITIZED',
-			'VT_ENABLE_INSTALLMENT',
-			'ENABLED_BNI_INSTALLMENT',
-			'ENABLED_MANDIRI_INSTALLMENT',
-			'VT_INSTALLMENTS_BNI',
-			'VT_INSTALLMENTS_MANDIRI'
+			'VB_CLIENT_KEY',
+			'VB_SERVER_KEY',
+			'VB_API_VERSION',
+			'VB_PAYMENT_TYPE',
+			'VB_3D_SECURE',
+			'VB_KURS',
+			'VB_BIN_FILTER',
+			'VB_CONVENIENCE_FEE',
+			'VB_PAYMENT_SUCCESS_STATUS_MAP',
+			'VB_PAYMENT_FAILURE_STATUS_MAP',
+			'VB_PAYMENT_CHALLENGE_STATUS_MAP',
+			'VB_ENVIRONMENT',
+			'VB_SANITIZED',
+			'VB_ENABLE_INSTALLMENT',
+			'VB_ENABLED_BNI_INSTALLMENT',
+			'VB_ENABLED_MANDIRI_INSTALLMENT',
+			'VB_INSTALLMENTS_BNI',
+			'VB_INSTALLMENTS_MANDIRI'
 			);
 
 		foreach (array('BNI', 'MANDIRI') as $bank) {
@@ -88,38 +77,17 @@ class VeritransBinPromo extends PaymentModule
 		}
 		
 		
-		if (isset($config['VT_KURS']))
-			$this->veritrans_kurs = $config['VT_KURS'];
+		if (isset($config['VB_KURS']))
+			$this->veritrans_kurs = $config['VB_KURS'];
 		else
-			Configuration::set('VT_KURS', 10000);
+			Configuration::set('VB_KURS', 10000);
 		
-		Configuration::set('VT_API_VERSION', 2);
-		Configuration::set('VT_PAYMENT_TYPE','vtweb');
+		Configuration::set('VB_API_VERSION', 2);
+		Configuration::set('VB_PAYMENT_TYPE','vtweb');
 
-		if (!isset($config['VT_SANITIZED']))
-			Configuration::set('VT_SANITIZED', 0);	
-		if (!isset($config['ENABLED_CREDIT_CARD']))
-			Configuration::set('ENABLED_CREDIT_CARD', 1);
-		if (!isset($config['ENABLED_CIMB']))
-			Configuration::set('ENABLED_CIMB', 0);		
-		if (!isset($config['ENABLED_MANDIRI']))
-			Configuration::set('ENABLED_MANDIRI', 0);		
-		if (!isset($config['ENABLED_PERMATAVA']))
-			Configuration::set('ENABLED_PERMATAVA', 0);
-		if (!isset($config['ENABLED_BRIEPAY']))
-			Configuration::set('ENABLED_BRIEPAY', 0);
-		if (!isset($config['ENABLED_TELKOMSEL_CASH']))
-			Configuration::set('ENABLED_TELKOMSEL_CASH', 0);
-		if (!isset($config['ENABLED_XL_TUNAI']))
-			Configuration::set('ENABLED_XL_TUNAI', 0);
-		if (!isset($config['ENABLED_MANDIRI_BILL']))
-			Configuration::set('ENABLED_MANDIRI_BILL', 0);
-		if (!isset($config['ENABLED_BBM_MONEY']))
-			Configuration::set('ENABLED_BBM_MONEY', 0);
-		if (!isset($config['ENABLED_INDOMARET']))
-			Configuration::set('ENABLED_INDOMARET', 0);
-		if (!isset($config['ENABLED_INDOSAT_DOMPETKU']))
-			Configuration::set('ENABLED_INDOSAT_DOMPETKU', 0);
+		if (!isset($config['VB_SANITIZED']))
+			Configuration::set('VB_SANITIZED', 0);	
+
 		parent::__construct();
 
 		$this->displayName = $this->l('Veritrans BIN Promo');
@@ -158,7 +126,7 @@ class VeritransBinPromo extends PaymentModule
 		$order_state->add();
 
 		Configuration::updateValue('VT_ORDER_STATE_ID', $order_state->id);
-		Configuration::updateValue('VT_API_VERSION', 2);
+		Configuration::updateValue('VB_API_VERSION', 2);
 
 		if (!parent::install() || 
 			!$this->registerHook('payment') ||
@@ -195,16 +163,16 @@ class VeritransBinPromo extends PaymentModule
 	{
 		if (Tools::isSubmit('btnSubmit'))
 		{
-			if (Tools::getValue('VT_API_VERSION') == 2)
+			if (Tools::getValue('VB_API_VERSION') == 2)
 			{
-				if (!Tools::getValue('VT_CLIENT_KEY'))
+				if (!Tools::getValue('VB_CLIENT_KEY'))
 					$this->_postErrors[] = $this->l('Client Key is required.');
-				if (!Tools::getValue('VT_SERVER_KEY'))
+				if (!Tools::getValue('VB_SERVER_KEY'))
 					$this->_postErrors[] = $this->l('Server Key is required.');
 			} 
 
 			// validate conversion rate existence
-			if (!Currency::exists('IDR', null) && !Tools::getValue('VT_KURS'))
+			if (!Currency::exists('IDR', null) && !Tools::getValue('VB_KURS'))
 			{
 				$this->_postErrors[] = $this->l('Currency conversion rate must be filled when IDR is not installed in the system.');
 			}
@@ -322,7 +290,7 @@ class VeritransBinPromo extends PaymentModule
 					array(
 						'type' => 'select',
 						'label' => 'Environment',
-						'name' => 'VT_ENVIRONMENT',
+						'name' => 'VB_ENVIRONMENT',
 						'required' => true,
 						'options' => array(
 							'query' => $environments,
@@ -334,7 +302,7 @@ class VeritransBinPromo extends PaymentModule
 					array(
 						'type' => 'text',
 						'label' => 'VT Client Key',
-						'name' => 'VT_CLIENT_KEY',
+						'name' => 'VB_CLIENT_KEY',
 						'required' => true,
 						'desc' => 'Consult to your Merchant Administration Portal for the value of this field.',
 						'class' => 'v1_vtdirect_settings v2_settings sensitive'
@@ -342,7 +310,7 @@ class VeritransBinPromo extends PaymentModule
 					array(
 						'type' => 'text',
 						'label' => 'VT Server Key',
-						'name' => 'VT_SERVER_KEY',
+						'name' => 'VB_SERVER_KEY',
 						'required' => true,
 						'desc' => 'Consult to your Merchant Administration Portal for the value of this field.',
 						'class' => 'v1_vtdirect_settings v2_settings sensitive'
@@ -350,7 +318,7 @@ class VeritransBinPromo extends PaymentModule
 					array(						
 						'type' => (version_compare(Configuration::get('PS_VERSION_DB'), '1.6') == -1)?'radio':'switch',
 						'label' => 'Enable 3D Secure?',
-						'name' => 'VT_3D_SECURE',
+						'name' => 'VB_3D_SECURE',
 						'required' => true,
 						'is_bool' => true,
 						'values' => array(
@@ -371,7 +339,7 @@ class VeritransBinPromo extends PaymentModule
 					array(
 						'type' => (version_compare(Configuration::get('PS_VERSION_DB'), '1.6') == -1)?'radio':'switch',
 						'label' => 'Enable sanitization',
-						'name' => 'VT_SANITIZED',						
+						'name' => 'VB_SANITIZED',						
 						'is_bool' => true,
 						'values' => array(
 							array(
@@ -387,26 +355,26 @@ class VeritransBinPromo extends PaymentModule
 							),
 						//'class' => ''
 						),
-					array(
-						'type' => (version_compare(Configuration::get('PS_VERSION_DB'), '1.6') == -1)?'radio':'switch',
-						'label' => 'Credit Card',
-						'name' => 'ENABLED_CREDIT_CARD',						
-						'is_bool' => true,
-						'values' => array(
-							array(
-								'id' => 'credit_yes',
-								'value' => 1,
-								'label' => 'Yes'
-								),
-							array(
-								'id' => 'credit_no',
-								'value' => 0,
-								'label' => 'No'
-								)
-							),
-						'desc' => 'You must enable Credit Card for BIN Promo filter.'
-						//'class' => ''
-						),
+					// array(
+					// 	'type' => (version_compare(Configuration::get('PS_VERSION_DB'), '1.6') == -1)?'radio':'switch',
+					// 	'label' => 'Credit Card',
+					// 	'name' => 'ENABLED_CREDIT_CARD',						
+					// 	'is_bool' => true,
+					// 	'values' => array(
+					// 		array(
+					// 			'id' => 'credit_yes',
+					// 			'value' => 1,
+					// 			'label' => 'Yes'
+					// 			),
+					// 		array(
+					// 			'id' => 'credit_no',
+					// 			'value' => 0,
+					// 			'label' => 'No'
+					// 			)
+					// 		),
+					// 	'desc' => 'You must enable Credit Card for BIN Promo filter.'
+					// 	//'class' => ''
+					// 	),
 					// array(
 					// 	'type' => (version_compare(Configuration::get('PS_VERSION_DB'), '1.6') == -1)?'radio':'switch',
 					// 	'label' => 'CIMB Clicks',
@@ -600,7 +568,7 @@ class VeritransBinPromo extends PaymentModule
 					/*array(
 						'type' => 'select',
 						'label' => 'Enable Installments',
-						'name' => 'VT_ENABLE_INSTALLMENT',						
+						'name' => 'VB_ENABLE_INSTALLMENT',						
 						'options' => array(
 							'query' => $installment_type,
 							'id' => 'id_option',
@@ -611,54 +579,54 @@ class VeritransBinPromo extends PaymentModule
 					array(
 						'type' => (version_compare(Configuration::get('PS_VERSION_DB'), '1.6') == -1)?'radio':'switch',
 						'label' => 'BNI Installment',
-						'name' => 'ENABLED_BNI_INSTALLMENT',						
+						'name' => 'VB_ENABLED_BNI_INSTALLMENT',						
 						'is_bool' => true,
 						'values' => array(
 							array(
-								'id' => 'ENABLED_BNI_INSTALLMENT_on',
+								'id' => 'VB_ENABLED_BNI_INSTALLMENT_on',
 								'value' => 1,
 								'label' => 'Yes'
 								),
 							array(
-								'id' => 'ENABLED_BNI_INSTALLMENT_off',
+								'id' => 'VB_ENABLED_BNI_INSTALLMENT_off',
 								'value' => 0,
 								'label' => 'No'
 								)
 							),
-						//'class' => 'ENABLED_BNI_INSTALLMENT'
+						//'class' => 'VB_ENABLED_BNI_INSTALLMENT'
 						),
 					array(
 						'type' => 'text',
 						'label' => 'Enable BNI Installments?',
-						'name' => 'VT_INSTALLMENTS_BNI',
+						'name' => 'VB_INSTALLMENTS_BNI',
 						//'class' => 'v1_vtweb_settings sensitive'\
-						'class' => 'VT_INSTALLMENTS_BNI'	
+						'class' => 'VB_INSTALLMENTS_BNI'	
 						),
 					array(
 						'type' => (version_compare(Configuration::get('PS_VERSION_DB'), '1.6') == -1)?'radio':'switch',
 						'label' => 'MANDIRI Installment',
-						'name' => 'ENABLED_MANDIRI_INSTALLMENT',						
+						'name' => 'VB_ENABLED_MANDIRI_INSTALLMENT',						
 						'is_bool' => true,
 						'values' => array(
 							array(
-								'id' => 'ENABLED_MANDIRI_INSTALLMENT_on',
+								'id' => 'VB_ENABLED_MANDIRI_INSTALLMENT_on',
 								'value' => 1,
 								'label' => 'Yes'
 								),
 							array(
-								'id' => 'ENABLED_MANDIRI_INSTALLMENT_off',
+								'id' => 'VB_ENABLED_MANDIRI_INSTALLMENT_off',
 								'value' => 0,
 								'label' => 'No'
 								)
 							),
-						//'class' => 'ENABLED_MANDIRI_INSTALLMENT'
+						//'class' => 'VB_ENABLED_MANDIRI_INSTALLMENT'
 						),
 					array(
 						'type' => 'text',
 						'label' => 'Enable Mandiri Installments?',
-						'name' => 'VT_INSTALLMENTS_MANDIRI',
+						'name' => 'VB_INSTALLMENTS_MANDIRI',
 						//'class' => 'v1_vtweb_settings sensitive'\
-						'class' => 'VT_INSTALLMENTS_MANDIRI'	
+						'class' => 'VB_INSTALLMENTS_MANDIRI'	
 						),*/							
 				/*	array(
 						'type' => 'checkbox',
@@ -670,12 +638,12 @@ class VeritransBinPromo extends PaymentModule
 							'name' => 'name'
 							),
 						//'class' => 'v1_vtweb_settings sensitive'
-						'class' => 'VT_INSTALLMENTS_MANDIRI'
+						'class' => 'VB_INSTALLMENTS_MANDIRI'
 						),*/
 					array(
 						'type' => 'select',
 						'label' => 'Map payment SUCCESS status to:',
-						'name' => 'VT_PAYMENT_SUCCESS_STATUS_MAP',
+						'name' => 'VB_PAYMENT_SUCCESS_STATUS_MAP',
 						'required' => true,	
 						'options' => array(
 							'query' => $order_states,
@@ -687,7 +655,7 @@ class VeritransBinPromo extends PaymentModule
 					array(
 						'type' => 'select',
 						'label' => 'Map payment FAILURE status to:',
-						'name' => 'VT_PAYMENT_FAILURE_STATUS_MAP',
+						'name' => 'VB_PAYMENT_FAILURE_STATUS_MAP',
 						'required' => true,
 						'options' => array(
 							'query' => $order_states,
@@ -699,7 +667,7 @@ class VeritransBinPromo extends PaymentModule
 					array(
 						'type' => 'select',
 						'label' => 'Map payment CHALLENGE status to:',
-						'name' => 'VT_PAYMENT_CHALLENGE_STATUS_MAP',
+						'name' => 'VB_PAYMENT_CHALLENGE_STATUS_MAP',
 						'required' => true,
 						'options' => array(
 							'query' => $order_states,
@@ -711,13 +679,13 @@ class VeritransBinPromo extends PaymentModule
 					array(
 						'type' => 'text',
 						'label' => 'IDR Conversion Rate',
-						'name' => 'VT_KURS',
+						'name' => 'VB_KURS',
 						'desc' => 'Veritrans will use this rate to convert prices to IDR when there are no default conversion system.'
 						),
 					array(
 						'type' => 'text',
 						'label' => 'BIN Filter',
-						'name' => 'VT_BIN_FILTER',
+						'name' => 'VB_BIN_FILTER',
 						'desc' => 'Fill with provided bank BIN numbers, please contact bank for BIN numbers lists. For multiple BIN, separate BIN by coma e.g: 4111,5111,6222'
 						),
 					),
@@ -772,7 +740,7 @@ class VeritransBinPromo extends PaymentModule
 		// 			array(
 		// 				'type' => 'select',
 		// 				'label' => 'Enable Installments',
-		// 				'name' => 'VT_ENABLE_INSTALLMENT',						
+		// 				'name' => 'VB_ENABLE_INSTALLMENT',						
 		// 				'options' => array(
 		// 					'query' => $installment_type,
 		// 					'id' => 'id_option',
@@ -782,7 +750,7 @@ class VeritransBinPromo extends PaymentModule
 		// 			array(
 		// 				'type' => 'switch',
 		// 				'label' => 'BNI Installment',
-		// 				'name' => 'ENABLED_BNI_INSTALLMENT',						
+		// 				'name' => 'VB_ENABLED_BNI_INSTALLMENT',						
 		// 				//'is_bool' => true,
 		// 				'values' => array(
 		// 					array(
@@ -806,12 +774,12 @@ class VeritransBinPromo extends PaymentModule
 		// 					'id' => 'id_option',
 		// 					'name' => 'name'
 		// 					),
-		// 				'class' => 'VT_INSTALLMENTS_BNI'	
+		// 				'class' => 'VB_INSTALLMENTS_BNI'	
 		// 				),
 		// 			array(
 		// 				'type' => 'switch',
 		// 				'label' => 'MANDIRI Installment',
-		// 				'name' => 'ENABLED_MANDIRI_INSTALLMENT',						
+		// 				'name' => 'VB_ENABLED_MANDIRI_INSTALLMENT',						
 		// 				'is_bool' => true,
 		// 				'values' => array(
 		// 					array(
@@ -835,7 +803,7 @@ class VeritransBinPromo extends PaymentModule
 		// 					'id' => 'id_option',
 		// 					'name' => 'name'
 		// 					),
-		// 				'class' => 'VT_INSTALLMENTS_MANDIRI'
+		// 				'class' => 'VB_INSTALLMENTS_MANDIRI'
 		// 				),					
 		// 			),
 		// 		'submit' => array(
@@ -881,29 +849,29 @@ class VeritransBinPromo extends PaymentModule
 
 		$this->context->smarty->assign(array(
 			'form_url' => Tools::htmlentitiesUTF8($_SERVER['REQUEST_URI']),
-			'api_version' => htmlentities(Configuration::get('VT_API_VERSION'), ENT_COMPAT, 'UTF-8'),
+			'api_version' => htmlentities(Configuration::get('VB_API_VERSION'), ENT_COMPAT, 'UTF-8'),
 			'api_versions' => array(1 => 'v1', 2 => 'v2'),
-			//'payment_type' => htmlentities(Configuration::get('VT_PAYMENT_TYPE'), ENT_COMPAT, 'UTF-8'),
+			//'payment_type' => htmlentities(Configuration::get('VB_PAYMENT_TYPE'), ENT_COMPAT, 'UTF-8'),
 			//'payment_types' => array('vtweb' => 'VT-Web', 'vtdirect' => 'VT-Direct'),
-			'client_key' => htmlentities(Configuration::get('VT_CLIENT_KEY'), ENT_COMPAT, 'UTF-8'),
-			'server_key' => htmlentities(Configuration::get('VT_SERVER_KEY'), ENT_COMPAT, 'UTF-8'),
+			'client_key' => htmlentities(Configuration::get('VB_CLIENT_KEY'), ENT_COMPAT, 'UTF-8'),
+			'server_key' => htmlentities(Configuration::get('VB_SERVER_KEY'), ENT_COMPAT, 'UTF-8'),
 			'environments' => array(false => 'Development', true => 'Production'),
-			'environment' => htmlentities(Configuration::get('VT_ENVIRONMENT'), ENT_COMPAT, 'UTF-8'),
-			'enable_3d_secure' => htmlentities(Configuration::get('VT_3D_SECURE'), ENT_COMPAT, 'UTF-8'),
-			'enable_sanitized' => htmlentities(Configuration::get('VT_SANITIZED'), ENT_COMPAT, 'UTF-8'),
+			'environment' => htmlentities(Configuration::get('VB_ENVIRONMENT'), ENT_COMPAT, 'UTF-8'),
+			'enable_3d_secure' => htmlentities(Configuration::get('VB_3D_SECURE'), ENT_COMPAT, 'UTF-8'),
+			'enable_sanitized' => htmlentities(Configuration::get('VB_SANITIZED'), ENT_COMPAT, 'UTF-8'),
 			// 'enabled_cimb' => htmlentities(Configuration::get('ENABLED_CIMB'), ENT_COMPAT, 'UTF-8'),
 			// 'enabled_mandiri' => htmlentities(Configuration::get('ENABLED_MANDIRI'), ENT_COMPAT, 'UTF-8'),
 			// 'enabled_permatava' => htmlentities(Configuration::get('ENABLED_PERMATAVA'), ENT_COMPAT, 'UTF-8'),
 			// 'enabled_indomaret' => htmlentities(Configuration::get('ENABLED_INDOMARET'), ENT_COMPAT, 'UTF-8'),
 			// 'enabled_indosat_dompetku' => htmlentities(Configuration::get('ENABLED_INDOSAT_DOMPETKU'), ENT_COMPAT, 'UTF-8'),
 			'statuses' => $order_states,
-			'payment_success_status_map' => htmlentities(Configuration::get('VT_PAYMENT_SUCCESS_STATUS_MAP'), ENT_COMPAT, 'UTF-8'),
-			'payment_challenge_status_map' => htmlentities(Configuration::get('VT_PAYMENT_CHALLENGE_STATUS_MAP'), ENT_COMPAT, 'UTF-8'),
-			'payment_failure_status_map' => htmlentities(Configuration::get('VT_PAYMENT_FAILURE_STATUS_MAP'), ENT_COMPAT, 'UTF-8'),
-			'kurs' => htmlentities(Configuration::get('VT_KURS', $this->veritrans_kurs), ENT_COMPAT, 'UTF-8'),
-			'BIN Filter' => htmlentities(Configuration::get('VT_BIN_FILTER'), ENT_COMPAT, 'UTF-8'), // untested
-			//'kurs' => htmlentities(Configuration::get('VT_INSTALLMENTS_BNI', ENT_COMPAT, 'UTF-8'),
-			'convenience_fee' => htmlentities(Configuration::get('VT_CONVENIENCE_FEE', $this->veritrans_convenience_fee), ENT_COMPAT, 'UTF-8'),
+			'payment_success_status_map' => htmlentities(Configuration::get('VB_PAYMENT_SUCCESS_STATUS_MAP'), ENT_COMPAT, 'UTF-8'),
+			'payment_challenge_status_map' => htmlentities(Configuration::get('VB_PAYMENT_CHALLENGE_STATUS_MAP'), ENT_COMPAT, 'UTF-8'),
+			'payment_failure_status_map' => htmlentities(Configuration::get('VB_PAYMENT_FAILURE_STATUS_MAP'), ENT_COMPAT, 'UTF-8'),
+			'kurs' => htmlentities(Configuration::get('VB_KURS', $this->veritrans_kurs), ENT_COMPAT, 'UTF-8'),
+			'BIN Filter' => htmlentities(Configuration::get('VB_BIN_FILTER'), ENT_COMPAT, 'UTF-8'), // untested
+			//'kurs' => htmlentities(Configuration::get('VB_INSTALLMENTS_BNI', ENT_COMPAT, 'UTF-8'),
+			'convenience_fee' => htmlentities(Configuration::get('VB_CONVENIENCE_FEE', $this->veritrans_convenience_fee), ENT_COMPAT, 'UTF-8'),
 			'this_path' => $this->_path,
 			'this_path_ssl' => Tools::getShopDomainSsl(true, true).__PS_BASE_URI__.'modules/'.$this->name.'/'
 			));
@@ -1055,8 +1023,8 @@ class VeritransBinPromo extends PaymentModule
 		global $cookie, $smarty;
 
 		$smarty->assign(array(
-			'payment_type' => Configuration::get('VT_PAYMENT_TYPE'),
-			'api_version' => Configuration::get('VT_API_VERSION'),
+			'payment_type' => Configuration::get('VB_PAYMENT_TYPE'),
+			'api_version' => Configuration::get('VB_API_VERSION'),
 			'error_message' => '',
 			'link' => $link,
 			'nbProducts' => $cart->nbProducts(),
@@ -1122,14 +1090,14 @@ class VeritransBinPromo extends PaymentModule
 		if (!Validate::isLoadedObject($customer))
 			Tools::redirect('index.php?controller=order&step=1');
 
-		$usd = Configuration::get('VT_KURS');
-		$cf = Configuration::get('VT_CONVENIENCE_FEE') * 0.01;
+		$usd = Configuration::get('VB_KURS');
+		$cf = Configuration::get('VB_CONVENIENCE_FEE') * 0.01;
 
 		$list_enable_payments = array();
 		
-		if (Configuration::get('ENABLED_CREDIT_CARD')){
+		
 			$list_enable_payments[] = "credit_card";
-		}		
+				
 		// if (Configuration::get('ENABLED_CIMB')){
 		// 	$list_enable_payments[] = "cimb_clicks";
 		// }
@@ -1164,8 +1132,8 @@ class VeritransBinPromo extends PaymentModule
 
 		$veritrans = new Veritrans_Config();
 		//SETUP
-		Veritrans_Config::$serverKey = Configuration::get('VT_SERVER_KEY');
-		Veritrans_Config::$isProduction = Configuration::get('VT_ENVIRONMENT') == 'production' ? true : false;
+		Veritrans_Config::$serverKey = Configuration::get('VB_SERVER_KEY');
+		Veritrans_Config::$isProduction = Configuration::get('VB_ENVIRONMENT') == 'production' ? true : false;
 
 		$url = Veritrans_Config::getBaseUrl(); 
 
@@ -1187,13 +1155,13 @@ class VeritransBinPromo extends PaymentModule
 		$delivery_address = new Address($cart->id_address_delivery);
 		
 		
-    	if (Configuration::get('VT_3D_SECURE') == 'on' || Configuration::get('VT_3D_SECURE') == 1)
+    	if (Configuration::get('VB_3D_SECURE') == 'on' || Configuration::get('VB_3D_SECURE') == 1)
 			Veritrans_Config::$is3ds = true;		
 
-		if (Configuration::get('VT_SANITIZED') == 'on' || Configuration::get('VT_SANITIZED') == 1)
+		if (Configuration::get('VB_SANITIZED') == 'on' || Configuration::get('VB_SANITIZED') == 1)
 			Veritrans_Config::$isSanitized = true;
 		
-		//error_log('sanitized '.Configuration::get('VT_SANITIZED'));
+		//error_log('sanitized '.Configuration::get('VB_SANITIZED'));
 
 		// Billing Address
     	$params_billing_address = array(
@@ -1255,7 +1223,7 @@ class VeritransBinPromo extends PaymentModule
 			} else
 			{
 			  // use rate
-			  $conversion_func = function($input) { return $input * intval(Configuration::get('VT_KURS')); };
+			  $conversion_func = function($input) { return $input * intval(Configuration::get('VB_KURS')); };
 			}
 			foreach ($items as &$item) {						
 				$item['price'] = intval(round(call_user_func($conversion_func, $item['price'])));				
@@ -1271,19 +1239,19 @@ class VeritransBinPromo extends PaymentModule
 			$gross_amount += $item['price'] * $item['quantity'];
 		}	
 		
-		$isBniInstallment = Configuration::get('ENABLED_BNI_INSTALLMENT') == 1;
-		$isMandiriInstallment = Configuration::get('ENABLED_MANDIRI_INSTALLMENT') == 1;
+		$isBniInstallment = Configuration::get('VB_ENABLED_BNI_INSTALLMENT') == 1;
+		$isMandiriInstallment = Configuration::get('VB_ENABLED_MANDIRI_INSTALLMENT') == 1;
 		$warning_redirect = false;
 		$fullPayment = true;
 
-		$installment_type_val = Configuration::get('VT_ENABLE_INSTALLMENT');
+		$installment_type_val = Configuration::get('VB_ENABLE_INSTALLMENT');
 		$param_required;
 		switch ($installment_type_val) {
 			case 'all_product':
 								
 				if ($isBniInstallment){					
 					//$bni_term2 = $this->getTermInstallment('BNI');
-					$a = Configuration::get('VT_INSTALLMENTS_BNI');
+					$a = Configuration::get('VB_INSTALLMENTS_BNI');
 					$term = explode(',',$a);
 					$bni_term = $term;
 					//error_log(print_r($bni_term,true));
@@ -1294,7 +1262,7 @@ class VeritransBinPromo extends PaymentModule
 
 					$mandiri_term =	$this->getTermInstallment('MANDIRI');
 					
-					$a = Configuration::get('VT_INSTALLMENTS_MANDIRI');
+					$a = Configuration::get('VB_INSTALLMENTS_MANDIRI');
 					$term = explode(',',$a);
 					$mandiri_term = $term;
 
@@ -1350,7 +1318,7 @@ class VeritransBinPromo extends PaymentModule
 		// 	);
 
 		$params_all = array(
-			'payment_type' => Configuration::get('VT_PAYMENT_TYPE'),
+			'payment_type' => Configuration::get('VB_PAYMENT_TYPE'),
 			'vtweb' => array (
 					'enabled_payments' => $list_enable_payments					
 				),
@@ -1375,14 +1343,14 @@ class VeritransBinPromo extends PaymentModule
 		}
 		
 		// BIN filter
-		$vtbinfilter = Configuration::get('VT_SANITIZED');
+		$vtbinfilter = Configuration::get('VB_SANITIZED');
 		if(isset($vtbinfilter)){
-			$binarray = explode(',',  Configuration::get('VT_BIN_FILTER'));
+			$binarray = explode(',',  Configuration::get('VB_BIN_FILTER'));
 			$params_all['vtweb']['credit_card_bins'] = $binarray;
 		}
 		// END BIN FILTER
 
-		if (Configuration::get('VT_API_VERSION') == 2 && Configuration::get('VT_PAYMENT_TYPE') != 'vtdirect') //transaksi https://github.com/veritrans/veritrans-php/blob/vtweb-2/examples/v2/vt_web/checkout_process.php line 77
+		if (Configuration::get('VB_API_VERSION') == 2 && Configuration::get('VB_PAYMENT_TYPE') != 'vtdirect') //transaksi https://github.com/veritrans/veritrans-php/blob/vtweb-2/examples/v2/vt_web/checkout_process.php line 77
 		{						
 			try {
 			    // Redirect to Veritrans VTWeb page
@@ -1400,7 +1368,7 @@ class VeritransBinPromo extends PaymentModule
 			return $keys;
 			
 		} else
-		if (Configuration::get('VT_API_VERSION') == 2 && Configuration::get('VT_PAYMENT_TYPE') == 'vtdirect') //transaksi https://github.com/veritrans/veritrans-php/blob/vtweb-2/examples/v2/vt_web/checkout_process.php line 77
+		if (Configuration::get('VB_API_VERSION') == 2 && Configuration::get('VB_PAYMENT_TYPE') == 'vtdirect') //transaksi https://github.com/veritrans/veritrans-php/blob/vtweb-2/examples/v2/vt_web/checkout_process.php line 77
 		{
 			echo 'not yet implementation.';
 			exit;
@@ -1505,8 +1473,8 @@ class VeritransBinPromo extends PaymentModule
 	{
 		$veritrans = new Veritrans_Config();
 		
-		Veritrans_Config::$isProduction = Configuration::get('VT_ENVIRONMENT') == 'production' ? true : false;
-		Veritrans_Config::$serverKey = Configuration::get('VT_SERVER_KEY');
+		Veritrans_Config::$isProduction = Configuration::get('VB_ENVIRONMENT') == 'production' ? true : false;
+		Veritrans_Config::$serverKey = Configuration::get('VB_SERVER_KEY');
 
 		$veritrans_notification = new Veritrans_Notification(); 
 		$history = new OrderHistory();
@@ -1523,19 +1491,19 @@ class VeritransBinPromo extends PaymentModule
 		    {
 		     	if ($veritrans_notification->fraud_status== 'accept')
 		     	{
-		       		$history->changeIdOrderState(Configuration::get('VT_PAYMENT_SUCCESS_STATUS_MAP'), $order_id_notif);
+		       		$history->changeIdOrderState(Configuration::get('VB_PAYMENT_SUCCESS_STATUS_MAP'), $order_id_notif);
 		       		echo 'Valid success notification accepted.';
 		       	}
 		       	else if ($veritrans_notification->fraud_status== 'challenge')
 		     	{
-		       		$history->changeIdOrderState(Configuration::get('VT_PAYMENT_CHALLENGE_STATUS_MAP'), $order_id_notif);
+		       		$history->changeIdOrderState(Configuration::get('VB_PAYMENT_CHALLENGE_STATUS_MAP'), $order_id_notif);
 		       		echo 'Valid challenge notification accepted.';
 		     	} 		       	
 		     } else if ($veritrans_notification->transaction_status == 'settlement'){
 
 		     	if($veritrans_notification->payment_type != 'credit_card')
 		     	{
-			     	$history->changeIdOrderState(Configuration::get('VT_PAYMENT_SUCCESS_STATUS_MAP'), $order_id_notif);
+			     	$history->changeIdOrderState(Configuration::get('VB_PAYMENT_SUCCESS_STATUS_MAP'), $order_id_notif);
 			       	echo 'Valid success notification accepted.';
 		     	}
 		     	else
@@ -1544,15 +1512,15 @@ class VeritransBinPromo extends PaymentModule
 		     	}
 
 		     }else if ($veritrans_notification->transaction_status == 'pending'){
-		     	$history->changeIdOrderState(Configuration::get('VT_PAYMENT_CHALLENGE_STATUS_MAP'), $order_id_notif);
+		     	$history->changeIdOrderState(Configuration::get('VB_PAYMENT_CHALLENGE_STATUS_MAP'), $order_id_notif);
 		       	echo 'Pending notification accepted.';
 		     }else if ($veritrans_notification->transaction_status == 'cancel'){
-		     	$history->changeIdOrderState(Configuration::get('VT_PAYMENT_FAILURE_STATUS_MAP'), $order_id_notif);
+		     	$history->changeIdOrderState(Configuration::get('VB_PAYMENT_FAILURE_STATUS_MAP'), $order_id_notif);
 		       	echo 'Pending notification accepted.';
 		     }
 			 else
 		     {
-		       $history->changeIdOrderState(Configuration::get('VT_PAYMENT_FAILURE_STATUS_MAP'), $order_id_notif);
+		       $history->changeIdOrderState(Configuration::get('VB_PAYMENT_FAILURE_STATUS_MAP'), $order_id_notif);
 		       echo 'Valid failure notification accepted';
 		     }
 		    

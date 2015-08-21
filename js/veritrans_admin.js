@@ -61,67 +61,67 @@
   } 
 
   function setUpVisibility(){    
-    var a = $("#VT_ENABLE_INSTALLMENT").val();      
+    var a = $("#VB_ENABLE_INSTALLMENT").val();      
     switch(a){
       case "off":            
             //alert("off " + a + " " + EnableMandiri + " " + EnableBni);
-            setCheckedAttribute('ENABLED_BNI_INSTALLMENT');
-            setCheckedAttribute('ENABLED_MANDIRI_INSTALLMENT');
-            hideOptions('VT_INSTALLMENTS_MANDIRI', "class");
-            hideOptions('ENABLED_MANDIRI_INSTALLMENT_off', "div");                                    
-            hideOptions('VT_INSTALLMENTS_BNI', "class");
-            hideOptions('ENABLED_BNI_INSTALLMENT_off', "div");                                                                
+            setCheckedAttribute('VB_ENABLED_BNI_INSTALLMENT');
+            setCheckedAttribute('VB_ENABLED_MANDIRI_INSTALLMENT');
+            hideOptions('VB_INSTALLMENTS_MANDIRI', "class");
+            hideOptions('VB_ENABLED_MANDIRI_INSTALLMENT_off', "div");                                    
+            hideOptions('VB_INSTALLMENTS_BNI', "class");
+            hideOptions('VB_ENABLED_BNI_INSTALLMENT_off', "div");                                                                
             break;
       case "certain_product":          
             //alert("cp " + a + " " + EnableMandiri + " " + EnableBni);
-            hideOptions('VT_INSTALLMENTS_MANDIRI', "class");
-            showOptions('ENABLED_MANDIRI_INSTALLMENT_off', "div");
-            hideOptions('VT_INSTALLMENTS_BNI', "class");
-            showOptions('ENABLED_BNI_INSTALLMENT_off', "div");            
+            hideOptions('VB_INSTALLMENTS_MANDIRI', "class");
+            showOptions('VB_ENABLED_MANDIRI_INSTALLMENT_off', "div");
+            hideOptions('VB_INSTALLMENTS_BNI', "class");
+            showOptions('VB_ENABLED_BNI_INSTALLMENT_off', "div");            
             break;
       case "all_product":                                
-            showOptions('ENABLED_MANDIRI_INSTALLMENT_off', "div");            
-            showOptions('ENABLED_BNI_INSTALLMENT_off', "div");    
-            var EnableBni = $('input:radio[name=ENABLED_BNI_INSTALLMENT]:checked').val();
-            var EnableMandiri = $('input:radio[name=ENABLED_MANDIRI_INSTALLMENT]:checked').val();                     
+            showOptions('VB_ENABLED_MANDIRI_INSTALLMENT_off', "div");            
+            showOptions('VB_ENABLED_BNI_INSTALLMENT_off', "div");    
+            var EnableBni = $('input:radio[name=VB_ENABLED_BNI_INSTALLMENT]:checked').val();
+            var EnableMandiri = $('input:radio[name=VB_ENABLED_MANDIRI_INSTALLMENT]:checked').val();                     
             
             if (EnableMandiri == 1){              
-              showOptions('VT_INSTALLMENTS_MANDIRI', "class");
+              showOptions('VB_INSTALLMENTS_MANDIRI', "class");
             } else {
-              hideOptions('VT_INSTALLMENTS_MANDIRI', "class");
+              hideOptions('VB_INSTALLMENTS_MANDIRI', "class");
             }
 
             if (EnableBni == 1){           
-              showOptions('VT_INSTALLMENTS_BNI', "class");
+              showOptions('VB_INSTALLMENTS_BNI', "class");
             } else {
-              hideOptions('VT_INSTALLMENTS_BNI', "class");
+              hideOptions('VB_INSTALLMENTS_BNI', "class");
             }
             break;
     }
   }
 
-  $("#VT_ENABLE_INSTALLMENT").on('change', function(e, data) {       
+  $("#VB_ENABLE_INSTALLMENT").on('change', function(e, data) {       
     setUpVisibility();
   });
   
-  $("#ENABLED_BNI_INSTALLMENT_off").on('change', function(e, data) {    
-     hideOptions('VT_INSTALLMENTS_BNI', "class");   
+  $("#VB_ENABLED_BNI_INSTALLMENT_off").on('change', function(e, data) {    
+     hideOptions('VB_INSTALLMENTS_BNI', "class");   
   });
 
-  $("#ENABLED_BNI_INSTALLMENT_on").on('change', function(e, data) {    
-     var a = $("#VT_ENABLE_INSTALLMENT").val();
+  $("#VB_ENABLED_BNI_INSTALLMENT_on").on('change', function(e, data) {    
+     var a = $("#VB_ENABLE_INSTALLMENT").val();
      if (a == "all_product")
-      showOptions('VT_INSTALLMENTS_BNI', "class");   
+      showOptions('VB_INSTALLMENTS_BNI', "class");   
   });
 
-  $("#ENABLED_MANDIRI_INSTALLMENT_off").on('change', function(e, data) {    
-     hideOptions('VT_INSTALLMENTS_MANDIRI', "class");   
+  $("#VB_ENABLED_MANDIRI_INSTALLMENT_off").on('change', function(e, data) {    
+     hideOptions('VB_INSTALLMENTS_MANDIRI', "class");   
   });
 
-  $("#ENABLED_MANDIRI_INSTALLMENT_on").on('change', function(e, data) {    
-      var a = $("#VT_ENABLE_INSTALLMENT").val();
+  $("#VB_ENABLED_MANDIRI_INSTALLMENT_on").on('change', function(e, data) {    
+      var a = $("#VB_ENABLE_INSTALLMENT").val();
       if (a == "all_product")
-        showOptions('VT_INSTALLMENTS_MANDIRI', "class");   
+        showOptions('VB_INSTALLMENTS_MANDIRI', "class");   
   });
   
   setUpVisibility();

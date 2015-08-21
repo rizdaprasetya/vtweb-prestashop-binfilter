@@ -23,8 +23,8 @@ class VeritransBinPromoPaymentModuleFrontController extends ModuleFrontControlle
       Tools::redirect('index.php?controller=order');
     
     $this->context->smarty->assign(array(
-      'payment_type' => Configuration::get('VT_PAYMENT_TYPE'),
-      'api_version' => Configuration::get('VT_API_VERSION'),
+      'payment_type' => Configuration::get('VB_PAYMENT_TYPE'),
+      'api_version' => Configuration::get('VB_API_VERSION'),
       'error_message' => '',
       'nbProducts' => $cart->nbProducts(),
       'cust_currency' => $cart->id_currency,

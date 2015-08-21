@@ -23,8 +23,8 @@ elseif (!Customer::getAddressesTotalById((int)($cookie->id_customer)))
 $veritransBinPromo = new VeritransBinPromo();
 $keys = $veritransBinPromo->execValidation($cart);
 
-$veritrans_api_version = Configuration::get('VT_API_VERSION');
-$veritrans_payment_method = Configuration::get('VT_PAYMENT_TYPE');
+$veritrans_api_version = Configuration::get('VB_API_VERSION');
+$veritrans_payment_method = Configuration::get('VB_PAYMENT_TYPE');
 
 if ($keys['errors'])
 {
