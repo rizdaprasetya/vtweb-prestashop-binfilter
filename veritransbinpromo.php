@@ -60,7 +60,8 @@ class VeritransBinPromo extends PaymentModule
 			'VB_ENABLED_BNI_INSTALLMENT',
 			'VB_ENABLED_MANDIRI_INSTALLMENT',
 			'VB_INSTALLMENTS_BNI',
-			'VB_INSTALLMENTS_MANDIRI'
+			'VB_INSTALLMENTS_MANDIRI',
+			'VB_DISPLAY_NAME'
 			);
 
 		foreach (array('BNI', 'MANDIRI') as $bank) {
@@ -82,6 +83,9 @@ class VeritransBinPromo extends PaymentModule
 		else
 			Configuration::set('VB_KURS', 10000);
 		
+		if (!isset($config['VB_DISPLAY_NAME']))
+			Configuration::set('VB_KURS', "Credit Card");
+
 		Configuration::set('VB_API_VERSION', 2);
 		Configuration::set('VB_PAYMENT_TYPE','vtweb');
 
@@ -688,6 +692,15 @@ class VeritransBinPromo extends PaymentModule
 						'name' => 'VB_BIN_FILTER',
 						'desc' => 'Fill with provided bank BIN numbers, please contact bank for BIN numbers lists. For multiple BIN, separate BIN by coma e.g: 4111,5111,6222'
 						),
+					array(
+						'type' => 'text',
+						'label' => 'Payment Button Display Title',
+						// 'required' => true,	
+						'name' => 'VB_DISPLAY_NAME',
+						'desc' => 'Customize payment button title that will be displayed to your customer when they checkout.  e.g: Cicilan CIMB, Cicilan Permata, etc. Leave blank for default title.',
+						//'class' => 'v1_vtweb_settings sensitive'\
+						'class' => 'VB_DISPLAY_NAME'	
+						),
 					),
 				'submit' => array(
 					'title' => $this->l('Save'),
@@ -930,8 +943,16 @@ class VeritransBinPromo extends PaymentModule
 		// error_log(print_r($cart,true)); // debugan
 		// BIN Filter 
 		$ispromo = TRUE;
+
+		// Check if display title form is filled by user, else default name will be used
+		$displayname = Configuration::get('VB_DISPLAY_NAME');
+		if(strlen($displayname) <= 1){
+			$displayname = "Credit Card";
+		}
+
 		$this->context->smarty->assign(array(
 			'ispromo' => $ispromo,
+			'displayname' => $displayname,
 			'cart' => $cart,
 			'this_path' => $this->_path,
 			'this_path_ssl' => Tools::getShopDomainSsl(true, true).__PS_BASE_URI__.'modules/'.$this->name.'/'

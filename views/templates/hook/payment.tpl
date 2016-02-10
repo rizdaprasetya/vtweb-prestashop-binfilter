@@ -10,7 +10,7 @@
         <a class="bankwire" href="{$link->getModuleLink('veritransbinpromo', 'payment')}" title="Pay Via Veritrans">
       {/if}
         <img src="{$this_path}Veritrans.png" alt="{l s='Pay via Veritrans' mod='veritransbinpromo'}" height="30px"/>
-        {l s='Credit Card (VISA/Master Card)'}
+        {$displayname}
       </a>
     </p>  
   </div>
