@@ -3,9 +3,9 @@
 if (!defined('_PS_VERSION_'))
 	exit;
 
-require_once('/../veritranspay/library/veritrans/Veritrans.php');
-require_once '/../veritranspay/library/veritrans/Veritrans/Notification.php';
-require_once '/../veritranspay/library/veritrans/Veritrans/Transaction.php';
+require_once(dirname(__FILE__).'/../veritranspay/library/veritrans/Veritrans.php');
+require_once(dirname(__FILE__).'/../veritranspay/library/veritrans/Veritrans/Notification.php');
+require_once(dirname(__FILE__).'/../veritranspay/library/veritrans/Veritrans/Transaction.php');
 
 class VeritransBinPromo extends PaymentModule
 {
