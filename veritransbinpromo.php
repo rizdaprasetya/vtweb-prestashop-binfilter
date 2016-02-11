@@ -1093,6 +1093,12 @@ class VeritransBinPromo extends PaymentModule
 	{
 		global $cookie;
 
+		// Add cart rules to cart
+		$cartRule = new CartRule();
+		$code = $cartRule->getIdByCode('veritrans');
+		$cart->addCartRule($code);
+		// end of cart rules addition
+
 		if ($cart->id_customer == 0 || $cart->id_address_delivery == 0 || $cart->id_address_invoice == 0 || !$this->active)
 			Tools::redirect('index.php?controller=order&step=1');
 
@@ -1351,10 +1357,10 @@ class VeritransBinPromo extends PaymentModule
 			'customer_details' => $params_customer_details
 			);
 		
-		if ($gross_amount < 500000){
-			$warning_redirect = true;
-			$keys['message'] = 2;
-		}
+		// if ($gross_amount < 500000){
+		// 	$warning_redirect = true;
+		// 	$keys['message'] = 2;
+		// }
 
 		if( !$warning_redirect && 
 			($isBniInstallment || $isMandiriInstallment) && 
