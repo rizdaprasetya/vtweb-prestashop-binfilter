@@ -1094,9 +1094,16 @@ class VeritransBinPromo extends PaymentModule
 		global $cookie;
 
 		// Add cart rules to cart
-		$cartRule = new CartRule();
-		$code = $cartRule->getIdByCode('veritrans');
-		$cart->addCartRule($code);
+		
+		if (version_compare(Configuration::get('PS_VERSION_DB'), '1.5') == -1){ // for 1.4 version
+			$discount = new Discount();
+			$code = $discount->getIdByName('veritrans');
+			$cart->addDiscount($code);
+		}else{
+			$cartRule = new CartRule();
+			$code = $cartRule->getIdByCode('veritrans');
+			$cart->addCartRule($code);
+		}
 		// end of cart rules addition
 
 		if ($cart->id_customer == 0 || $cart->id_address_delivery == 0 || $cart->id_address_invoice == 0 || !$this->active)

@@ -28,8 +28,9 @@
 				- {l s='The total amount of your order is' mod='veritransbinpromo'}
 				<span id="amount" class="price">{displayPrice price=$total}</span>
 				{if $use_taxes == 1}
-		    	{l s='(tax incl.)' mod='veritransbinpromo'}
-		    {/if}<br/>
+		    	{l s='(tax incl.)' mod='veritransbinpromo'} 
+		    {/if} <span><strong> | Before discount applied</strong></span><br/>
+		    - <span><strong>Discount</strong> will be applied on the next step</span><br/>
 				-
 				{if $currencies|@count > 1}
 					{l s='We allow several currencies to be sent via Veritrans.' mod='veritransbinpromo'}
