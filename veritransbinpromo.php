@@ -1262,6 +1262,11 @@ class VeritransBinPromo extends PaymentModule
 			foreach ($items as &$item) {						
 				$item['price'] = intval(round(call_user_func($conversion_func, $item['price'])));				
 			}
+		}else if($cart_currency->iso_code == 'IDR')
+		{
+			foreach ($items as &$item) {						
+				$item['price'] = intval(round($item['price']));				
+			}
 		}		
 				
 
