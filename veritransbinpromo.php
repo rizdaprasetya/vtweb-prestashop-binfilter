@@ -1377,7 +1377,7 @@ class VeritransBinPromo extends PaymentModule
 		}
 		
 		// BIN filter
-		$vtbinfilter = Configuration::get('VB_SANITIZED');
+		$vtbinfilter = Configuration::get('VB_BIN_FILTER');
 		if(isset($vtbinfilter)){
 			$binarray = explode(',',  Configuration::get('VB_BIN_FILTER'));
 			$params_all['vtweb']['credit_card_bins'] = $binarray;
