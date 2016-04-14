@@ -84,7 +84,7 @@ class VeritransBinPromo extends PaymentModule
 			Configuration::set('VB_KURS', 10000);
 		
 		if (!isset($config['VB_DISPLAY_NAME']))
-			Configuration::set('VB_KURS', "Credit Card");
+			Configuration::set('VI_DISPLAY_NAME', "Credit Card");
 
 		Configuration::set('VB_API_VERSION', 2);
 		Configuration::set('VB_PAYMENT_TYPE','vtweb');
